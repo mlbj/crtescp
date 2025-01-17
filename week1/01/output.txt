@@ -1,0 +1,3 @@
+[COURSE:1][ASSIGNMENT:1] Linux mq1 6.8.0-51-generic #52~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Mon Dec  9 15:00:52 UTC 2 x86_64 x86_64 x86_64 GNU/Linux
+Jan 16 21:51:26 mq1 pthread [COURSE:1,ASSIGNMENT:1] Hello World from Main!
+Jan 16 21:51:26 mq1 pthread [COURSE:1,ASSIGNMENT:1] Hello World from Thread!
