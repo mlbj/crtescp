@@ -73,9 +73,7 @@ int main (int argc, char *argv[]){
         perror("pthread_mutex_init");
         return EXIT_FAILURE;   
     }
-
-
-
+  
     // uname -a log 
     FILE *fp = popen("uname -a", "r");
     if (!fp){
