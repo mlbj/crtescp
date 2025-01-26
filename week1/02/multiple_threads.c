@@ -24,12 +24,13 @@ pthread_mutex_t mutex;
 pthread_t threads[NUM_THREADS];
 thread_params_t thread_params[NUM_THREADS];
  
-
+// function to be called by each thread. 
 void *inc_thread(void *threadp){
     int i, gsum=0;
     thread_params_t *thread_params = (thread_params_t*) threadp;
     char* thread_message = (char*)malloc(128*sizeof(char));
 
+    // thread logic 
     for(i=0; i<thread_params->thread_idx; i++){
         gsum=gsum+i;
     }   
@@ -41,6 +42,7 @@ void *inc_thread(void *threadp){
             thread_params->thread_idx, 
             gsum);
 
+    // safe syslog 
     pthread_mutex_lock(&mutex);
     produce_syslog(hostname, descriptor, thread_message, 1);
     pthread_mutex_unlock(&mutex);
@@ -79,7 +81,6 @@ void produce_syslog(char* hostname,
     free(full_message);
 }
  
- 
 int main (int argc, char *argv[]){
     int rc;
     int i=0;
@@ -111,7 +112,8 @@ int main (int argc, char *argv[]){
                        (void *)&(thread_params[i]) // parameters to pass in
                       );
     }
- 
+    
+    // join threads
     for(i=0; i<NUM_THREADS; i++){
         pthread_join(threads[i], NULL);
     }

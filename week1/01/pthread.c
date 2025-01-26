@@ -24,25 +24,22 @@ pthread_mutex_t mutex;
 pthread_t threads[NUM_THREADS];
 thread_params_t thread_params[NUM_THREADS];
 
-
+// this is the function called by the thread
 void *counter_thread(void *threadp){
-    int sum=0, i;
+    int i;
     char* message = (char*)malloc(256*sizeof(char));
 
     thread_params_t *thread_params = (thread_params_t *)threadp;
-
-    for(i=1; i < (thread_params->thread_idx)+1; i++)
-        sum=sum+i;
     
     // hello world from thread log
     pthread_mutex_lock(&mutex);
     produce_syslog(hostname, descriptor, "Hello World from Thread!");
     pthread_mutex_unlock(&mutex);
 
-
     return NULL;
 }
 
+// this function writes our logs to stdout
 void produce_syslog(char* hostname,
                     char* descriptor,
                     char* message){
@@ -92,7 +89,7 @@ int main (int argc, char *argv[]){
     produce_syslog(hostname, descriptor, "Hello World from Main!");
     pthread_mutex_unlock(&mutex);
     
-
+    // create threads
     for(i=0; i<NUM_THREADS; i++){
         thread_params[i].thread_idx=i;
 
@@ -102,8 +99,9 @@ int main (int argc, char *argv[]){
                        (void *)&(thread_params[i]) // parameters to pass in
                       );
 
-   }
+    }
 
+    // join threads
     for(i=0; i<NUM_THREADS; i++)
         pthread_join(threads[i], NULL);
  
